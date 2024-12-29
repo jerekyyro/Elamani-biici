@@ -58,8 +58,9 @@ def show_and_guess(namesnsongs:dict):
             else:
                 rw.loc[row,col] = False
     os.system('cls')
-    rw["Sum"] = rw[list(situ.columns)].sum(axis=1).astype(int)
     print("Oikeat arvaukset:")
+    print(rw)
+    rw["Sum"] = rw[list(situ.columns)].sum(axis=1).astype(int)
     print(rw["Sum"].sort_values(ascending=False, inplace=False).to_string())
     print()
 
