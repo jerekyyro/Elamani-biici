@@ -2,31 +2,44 @@ import os
 import random
 import pandas as pd
 
+def open_browser(url="youtube.com"):
+    import webbrowser as wb
+
+    chrome_path = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s --incognito"
+    wb.get(chrome_path).open_new(url)
+
 def readsongs(namesnsongs = {}):
+    
     while True:
+        
         while True:
-            name = input("Anna oma nimesi: ").capitalize()
+            name = input("Anna ensin oma nimesi: ").capitalize()
             if (name not in namesnsongs.keys()) and len(name) > 1:
                 break
             else:
                 os.system('cls')
                 print("Nimi jo annettu tai liian lyhyt, anna uudestaan.")
+        
+        input("Anna seuraavaksi linkki biisin YouTube-videoon tai muu tieto, mistä biisi löytyy. \n Kun olet löytänyt biisin YouTubesta, kopioi osoite (CTRL + C), sulje selain, ja liitä osoite tänne. \n Paina mitä tahansa avataksesi selaimen. ")
+        open_browser()
+
+        info = input("Liitä osoite tai muu tieto tähän ja paina ENTER.")
+
         while True:
-            song = input("Anna artistin ja biisin nimi: ").capitalize()
+            song = input("Anna vielä artistin ja biisin nimi: ").capitalize()
             if len(song) > 3:
                 break
             else:
                 os.system('cls')
                 print("Biisin nimi liian lyhyt, anna uudestaan.")
-            
-        info = input("Anna lisätieto tai jätä tyhjäksi painamalla enteriä: ")
-        os.system('cls')
+
         
+        os.system('cls')
         
         print("Antamasi tiedot:")
         print("Nimesi: ", name)
         print("Biisi: ", song)
-        print("Lisätieto: ", info)
+        print("Osoite/lisätieto: ", info)
         e = input("Paina ENTER hyväksyäksesi tiedot, piilottaaksesi tiedot ja siirtääksesi vuoron seuraavalle, K + ENTER antaaksesi omat tietosi uudestaan tai L + ENTER aloittaaksesi pelin.")
         if e == "k" or e == "K":
             continue
@@ -40,7 +53,7 @@ def readsongs(namesnsongs = {}):
     return namesnsongs
 
 def show_and_guess(namesnsongs:dict):
-    votes = {}
+    #votes = {}
     players = list(namesnsongs.keys())
     shuffled = players.copy()
     random.shuffle(shuffled)
@@ -54,7 +67,15 @@ def show_and_guess(namesnsongs:dict):
         print(f"Kuunnellaan biisi numero {i+1}:")
         print(songname)
         print(f"Lisätieto: {namesnsongs[name][1]}")
-        input("Paina enter jatkaaksesi.")
+        input("Paina enter kuunnellaksesi biisin.")
+
+        info = namesnsongs[name][1]
+        if "youtube.com" in info:
+            open_browser(info)
+        else:
+            open_browser()
+
+        input("Paina enter jatkaaksesi.") 
         for pname in players:
             while True:
                 joiner = ", "
@@ -113,19 +134,25 @@ def show_and_guess(namesnsongs:dict):
     print(rw["Sum"].sort_values(ascending=False, inplace=False).to_string())
     print()
 
-if __name__ == "__main__":
+def run():
     os.system('cls')
     input("Elämäni biici, v. 0.1, 2025. Paina mitä tahansa aloittaaksesi.")
     os.system('cls')
     songs = {}
     while True:
+        os.system('cls')
         songs = readsongs()
         joiner = ", "
         print(f"Pelaajat: {joiner.join(list(songs.keys()))}. ")
-        if input("Paina mitä tahansa jatkaaksesi tai kirjoita \"a\" syöttääksesi pelaajien tiedot uudestaan.") != "a":
+        if input("Paina mitä tahansa jatkaaksesi tai kirjoita A + ENTER syöttääksesi pelaajien tiedot uudestaan.").capitalize() != "A":
             break
     os.system('cls')
     input("Biisit luettu! Paina enter aloittaaksesi pelin!")
     show_and_guess(songs)
 
+if __name__ == "__main__":
+    run()
 
+   
+
+    
