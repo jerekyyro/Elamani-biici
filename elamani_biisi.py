@@ -20,10 +20,10 @@ def readsongs(namesnsongs = {}):
                 os.system('cls')
                 print("Nimi jo annettu tai liian lyhyt, anna uudestaan.")
         
-        input("Anna seuraavaksi linkki biisin YouTube-videoon tai muu tieto, mistä biisi löytyy. \n Kun olet löytänyt biisin YouTubesta, kopioi osoite (CTRL + C), sulje selain, ja liitä osoite tänne. \n Paina mitä tahansa avataksesi selaimen. ")
+        input("Anna seuraavaksi linkki biisin YouTube-videoon tai muu tieto, mistä biisi löytyy. \n Kun olet löytänyt biisin YouTubesta, kopioi osoite (CTRL + C), sulje selain, ja liitä osoite tänne. \n Paina ENTER avataksesi selaimen. ")
         open_browser()
 
-        info = input("Liitä osoite tai muu tieto tähän ja paina ENTER.")
+        info = input("Liitä (CTRL + V) osoite tai muu tieto tähän ja paina ENTER. ")
 
         while True:
             song = input("Anna vielä artistin ja biisin nimi: ").capitalize()
@@ -40,7 +40,7 @@ def readsongs(namesnsongs = {}):
         print("Nimesi: ", name)
         print("Biisi: ", song)
         print("Osoite/lisätieto: ", info)
-        e = input("Paina ENTER hyväksyäksesi tiedot, piilottaaksesi tiedot ja siirtääksesi vuoron seuraavalle, K + ENTER antaaksesi omat tietosi uudestaan tai L + ENTER aloittaaksesi pelin.")
+        e = input("Paina ENTER hyväksyäksesi tiedot, piilottaaksesi tiedot ja siirtääksesi vuoron seuraavalle, kirjoita K ja paina ENTER antaaksesi omat tietosi uudestaan taijos olit viimeinen, kirjota L ja paina ENTER aloittaaksesi pelin.\n MUISTA SULKEA SELAIN! ")
         if e == "k" or e == "K":
             continue
         elif e == "l" or e =="L":
@@ -66,7 +66,7 @@ def show_and_guess(namesnsongs:dict):
      
         print(f"Kuunnellaan biisi numero {i+1}:")
         print(songname)
-        print(f"Lisätieto: {namesnsongs[name][1]}")
+        print(f"Linkki/lisätieto: {namesnsongs[name][1]}")
         input("Paina enter kuunnellaksesi biisin.")
 
         info = namesnsongs[name][1]
@@ -95,7 +95,7 @@ def show_and_guess(namesnsongs:dict):
         #situ = situ.set_index(["Pelaaja"])
         #print(situ)
         print(guess_df)
-        input("Paina enter jatkaaksesi.")
+        input("Paina ENTER jatkaaksesi.")
         
         
         #TÄMÄ RIKKOO NYT ARVAUSJÄRJESTYKSEN. KORJAA LUOMALLA DATAFRAME HETI ALUSSA, jonka idneksiksi asetetaan pelaajat; lisätään kolumni aina uuden biisin alussa, sitten 
@@ -109,7 +109,7 @@ def show_and_guess(namesnsongs:dict):
 
     #for col in situ.columns:
     for col in guess_df.columns:
-        print(f"Aika paljastaa, kenen biisivalinta oli {col}?")
+        print(f"Aika paljastaa, kenen biisivalinta oli {col} ja mikä on tarina biisin takana?")
         input("Paina enter siirtyäksesi paljastamaan seuraava biisi!")
         os.system('cls')
          
@@ -136,15 +136,16 @@ def show_and_guess(namesnsongs:dict):
 
 def run():
     os.system('cls')
-    input("Elämäni biici, v. 0.1, 2025. Paina mitä tahansa aloittaaksesi.")
+    input("Elämäni biici, v. 0.1, 2025. \nOhjelmointi: Jere Kyyrö \nTestaus: Antti Koskenalho\nPaina ENTER aloittaaksesi.")
     os.system('cls')
+    input("Aloitetaan biisien syöttmäisellä. Kukin pelaaja syöttää itse biisinsä tiedot. Suosittelemme käyttämään kuulokkeita! Jatka painamalla ENTER.")
     songs = {}
     while True:
         os.system('cls')
         songs = readsongs()
         joiner = ", "
         print(f"Pelaajat: {joiner.join(list(songs.keys()))}. ")
-        if input("Paina mitä tahansa jatkaaksesi tai kirjoita A + ENTER syöttääksesi pelaajien tiedot uudestaan.").capitalize() != "A":
+        if input("Paina ENTER jatkaaksesi tai kirjoita A + ENTER syöttääksesi pelaajien tiedot uudestaan.").capitalize() != "A":
             break
     os.system('cls')
     input("Biisit luettu! Paina enter aloittaaksesi pelin!")
