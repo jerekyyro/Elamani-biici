@@ -14,7 +14,7 @@ def readsongs(namesnsongs = {}):
     while True:
         
         while True:
-            name = input("Anna ensin oma nimesi. Kirjoita X ja paina ENTER peruuttaaksesi. ").capitalize()
+            name = input("Anna ensin oma nimesi. Kirjoita \x1b[1mX\x1b[0m ja paina \x1b[1mENTER\x1b[0m peruuttaaksesi. ").capitalize()
             if name == "X":
                 break
             elif (name not in namesnsongs.keys()) and len(name) > 1:
@@ -26,7 +26,7 @@ def readsongs(namesnsongs = {}):
         if name == "X":
             break
 
-        input("Anna seuraavaksi linkki biisin YouTube-videoon tai muu tieto, mistä biisi löytyy. \n Kun olet löytänyt biisin YouTubesta, kopioi osoite (CTRL + C), sulje selain, ja liitä osoite tänne. \n Paina ENTER avataksesi selaimen. ")
+        input("Anna seuraavaksi linkki biisin YouTube-videoon tai muu tieto, mistä biisi löytyy. \n Kun olet löytänyt biisin YouTubesta, kopioi osoite \x1b[1m(CTRL + C)\x1b[0m, sulje selain, ja liitä osoite tänne. \n Paina \x1b[1mENTER\x1b[0m avataksesi selaimen. ")
         open_browser()
 
         #Tyhjennetään leikepöytä
@@ -35,7 +35,7 @@ def readsongs(namesnsongs = {}):
             windll.user32.EmptyClipboard()
             windll.user32.CloseClipboard()
 
-        info = input("Liitä (CTRL + V) osoite tai muu tieto tähän ja paina ENTER. ")
+        info = input("Liitä \x1b[1m(CTRL + V)\x1b[0m osoite tai muu tieto tähän ja paina \x1b[1mENTER\x1b[0m. ")
 
         while True:
             song = input("Anna vielä artistin ja biisin nimi: ").capitalize()
@@ -51,7 +51,7 @@ def readsongs(namesnsongs = {}):
         print("Nimesi: ", name)
         print("Biisi: ", song)
         print("Osoite/lisätieto: ", info)
-        e = input("Paina ENTER hyväksyäksesi tiedot, piilottaaksesi tiedot ja siirtääksesi vuoron seuraavalle, kirjoita K ja paina ENTER antaaksesi omat tietosi uudestaan tai jos olit viimeinen, kirjota L ja paina ENTER aloittaaksesi pelin.\n MUISTA SULKEA SELAIN! ")
+        e = input("Paina\n -\x1b[1mENTER\x1b[0m hyväksyäksesi tiedot, piilottaaksesi tiedot ja siirtääksesi vuoron seuraavalle, \n-kirjoita \x1b[1mK\x1b[0m ja paina \x1b[1mENTER\x1b[0m antaaksesi omat tietosi uudestaan\n-tai jos olit viimeinen, kirjota \x1b[1mL\x1b[0m ja paina \x1b[1mENTER\x1b[0m aloittaaksesi pelin.\n \x1b[1mMUISTA SULKEA SELAIN!\x1b[0m ")
         if e == "k" or e == "K":
             continue
         elif e == "l" or e =="L":
@@ -62,6 +62,23 @@ def readsongs(namesnsongs = {}):
         os.system('cls')
         
     return namesnsongs
+
+def colorize_tbl(olddata1, data2):
+    data1 = olddata1.copy()
+    # Colorize cell values
+    for x in range(len(data1.columns)):
+        for y in range(len(data1.index)):
+            if data2.iloc[y, x]:
+                data1.iloc[y, x] = f"\33[32m{data1.iloc[y, x]}\33[39m"  # Green
+            else:
+                data1.iloc[y, x] = f"\33[31m{data1.iloc[y, x]}\33[39m"  # Red
+    
+    # Colorize column headers
+    org_cols = data1.columns
+    new_cols = {col: f"\33[39m{col}\33[39m" for col in org_cols}
+    data1.rename(columns=new_cols, inplace=True)  # Apply renaming in-place
+    
+    return data1
 
 def show_and_guess(namesnsongs:dict):
     players = list(namesnsongs.keys())
@@ -75,13 +92,13 @@ def show_and_guess(namesnsongs:dict):
         print(f"Kuunnellaan biisi numero {i+1}:")
         print(songname)
         print(f"Linkki/lisätieto: {namesnsongs[name][1]}")
-        input("Paina enter kuunnellaksesi biisin.")
+        input("Paina \x1b[1mENTER\x1b[0m kuunnellaksesi biisin.")
         info = namesnsongs[name][1]
         if "youtube.com" in info:
             open_browser(info)
         else:
             open_browser()
-        input("Paina enter jatkaaksesi.") 
+        input("Paina \x1b[1mENTER\x1b[0m jatkaaksesi.") 
         for pname in players:
             while True:
                 joiner = ", "
@@ -95,15 +112,15 @@ def show_and_guess(namesnsongs:dict):
                     print("Virheellinen nimi, anna nimi uudestaan!")
         print("Arvaustilanne:")
         print(guess_df)
-        input("Paina ENTER jatkaaksesi.")
+        input("Paina \x1b[1mENTER\x1b[0m jatkaaksesi.")
         
         
         players.insert(0, players.pop())        
         os.system('cls')
 
     for col in guess_df.columns:
-        print(f"Aika paljastaa, kenen biisivalinta oli {col} ja mikä on tarina biisin takana?")
-        input("Paina enter siirtyäksesi paljastamaan seuraava biisi!")
+        print(f"Aika paljastaa, kenen biisivalinta oli \x1b[1m{col}\x1b[0m ja mikä on tarina biisin takana?")
+        input("Paina \x1b[1mENTER\x1b[0m siirtyäksesi paljastamaan seuraava biisi!")
         os.system('cls')
          
     rw = guess_df.copy()
@@ -115,7 +132,9 @@ def show_and_guess(namesnsongs:dict):
                 rw.loc[row,col] = False
     os.system('cls')
     print("Oikeat arvaukset:")
-    print(rw)
+    colored_df = colorize_tbl(guess_df, rw)
+    
+    print(colored_df)
     print()
     print("Pisteet:")
     rw["Sum"] = rw[list(guess_df.columns)].sum(axis=1).astype(int)
@@ -124,23 +143,37 @@ def show_and_guess(namesnsongs:dict):
 
 def run():
     os.system('cls')
-    input("Elämäni biici, v. 0.1, 2025. \nOhjelmointi: Jere Kyyrö \nTestaus: Antti Koskenalho\nPaina ENTER aloittaaksesi.")
+    input("\x1b[1mElämäni biici\x1b[0m, v. 0.1, 2025. \nOhjelmointi: Jere Kyyrö \nTestaus: Antti Koskenalho, Sanna Kari\nPaina \x1b[1mENTER\x1b[0m aloittaaksesi.")
     os.system('cls')
-    input("Aloitetaan biisien syöttämisellä. Kukin pelaaja syöttää itse biisinsä tiedot. Suosittelemme käyttämään kuulokkeita! Jatka painamalla ENTER.")
+    input("Aloitetaan biisien syöttämisellä. Kukin pelaaja syöttää itse biisinsä tiedot. Suosittelemme käyttämään kuulokkeita! Jatka painamalla \x1b[1mENTER\x1b[0m.")
     songs = {}
     while True:
         os.system('cls')
         songs = readsongs()
         joiner = ", "
         print(f"Pelaajat: {joiner.join(list(songs.keys()))}. ")
-        if input("Paina ENTER jatkaaksesi tai kirjoita A + ENTER syöttääksesi pelaajien tiedot uudestaan.").capitalize() != "A":
+        if input("Paina \x1b[1mENTER\x1b[0m jatkaaksesi tai kirjoita \x1b[1mA +\x1b[0m \x1b[1mENTER\x1b[0m syöttääksesi pelaajien tiedot uudestaan.").capitalize() != "A":
             break
     os.system('cls')
-    input("Biisit luettu! Paina enter aloittaaksesi pelin!")
+    input("Biisit luettu! Paina \x1b[1mENTER\x1b[0m aloittaaksesi pelin!")
     show_and_guess(songs)
 
 if __name__ == "__main__":
+    
     run()
+
+ 
+
+
+
+ 
+
+
+
+
+
+
+
 
    
 
