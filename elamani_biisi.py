@@ -12,6 +12,9 @@ def readsongs(namesnsongs = {}):
     from ctypes import windll
 
     while True:
+        if windll.user32.OpenClipboard(None):
+            windll.user32.EmptyClipboard()
+            windll.user32.CloseClipboard()
         
         while True:
             name = input("Anna ensin oma nimesi. Kirjoita \x1b[1mX\x1b[0m ja paina \x1b[1mENTER\x1b[0m peruuttaaksesi. ").capitalize()
@@ -31,9 +34,7 @@ def readsongs(namesnsongs = {}):
 
         #Tyhjennetään leikepöytä
 
-        if windll.user32.OpenClipboard(None):
-            windll.user32.EmptyClipboard()
-            windll.user32.CloseClipboard()
+       
 
         info = input("Liitä \x1b[1m(CTRL + V)\x1b[0m osoite tai muu tieto tähän ja paina \x1b[1mENTER\x1b[0m. ")
 
